@@ -47,9 +47,10 @@ const chatSlice = createSlice({
         state.isReceiverBlocked = false;
       }
     },
-    changeBlock: (state) => {
-      state.isReceiverBlocked = !state.isReceiverBlocked;
-    },
+    changeBlock: (state) => ({
+      ...state,
+      isReceiverBlocked: !state.isReceiverBlocked,
+    }),
     resetChat: (state) => {
       state.chatId = null;
       state.user = null;
