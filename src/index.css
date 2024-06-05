@@ -1,0 +1,162 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --scrollbar-color-track: transparent;
+  --scrollbar-color-thumb: #0b121580;
+  --scrollbar-width: thin;
+}
+
+html {
+  color-scheme: dark;
+}
+
+/* https://pbs.twimg.com/media/GO--FXVWEAIrFLc?format=webp&name=large */
+
+body {
+  font-family: "Outfit", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  background-image: url("/furina.jpg");
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+}
+
+.content {
+  width: 80vw;
+  height: 90vh;
+  background-color: #0b121580;
+  backdrop-filter: blur(19px) saturate(180%);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
+  .option {
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      img {
+        width: 30px;
+        height: 30px;
+        background-color: rgba(17, 25, 40, 0.3);
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+    }
+
+    .photos {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+
+      .photoItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .photoDetail {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+
+          img {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            object-fit: cover;
+          }
+
+          span {
+            font-size: 14px;
+            color: lightgray;
+            font-weight: 300;
+          }
+        }
+
+        .icon {
+          width: 30px;
+          height: 30px;
+          background-color: rgba(17, 25, 40, 0.3);
+          padding: 10px;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  button {
+    padding: 15px;
+    background-color: rgba(230, 74, 105, 0.553);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(220, 20, 60, 0.796);
+    }
+
+    &.logout {
+      padding: 10px;
+      background-color: #1a73e8;
+    }
+  }
+}
+
+/* https://developer.chrome.com/docs/css-ui/scrollbar-styling */
+@supports (scrollbar-width: auto) {
+  .scroller {
+    scrollbar-color: transparent transparent;
+    scrollbar-width: var(--scrollbar-width);
+    &:hover {
+      scrollbar-color: var(--scrollbar-color-thumb) var(--scrollbar-color-track);
+    }
+  }
+}
+@supports selector(::-webkit-scrollbar) {
+  .scroller::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-color-thumb);
+  }
+  .scroller::-webkit-scrollbar-track {
+    background: var(--scrollbar-color-track);
+  }
+  .scroller::-webkit-scrollbar {
+    max-width: var(--scrollbar-width-legacy);
+    max-height: var(--scrollbar-width-legacy);
+  }
+}
+
+@media not all and (display-mode: standalone) {
+  @media screen and (min-width: 1441px) {
+    .content {
+      max-width: 1600px;
+      margin: 0 auto;
+      box-shadow: 0 6px 18px rgba(255, 255, 255, 0.05);
+    }
+  }
+}
