@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface ChatState {
   chatId: string | null;
   user: UserType | null;
+  showDetail: boolean;
   isCurrentUserBlocked: boolean;
   isReceiverBlocked: boolean;
 }
@@ -11,6 +12,7 @@ interface ChatState {
 const initialState: ChatState = {
   chatId: null,
   user: null,
+  showDetail: false,
   isCurrentUserBlocked: false,
   isReceiverBlocked: false,
 };
@@ -29,6 +31,8 @@ const chatSlice = createSlice({
     ) => {
       const currentUser = action.payload.currentUser;
       const user = action.payload.user;
+
+      state.showDetail = false;
 
       if (user.blocked.includes(currentUser.id)) {
         state.chatId = action.payload?.chatId;
@@ -57,8 +61,12 @@ const chatSlice = createSlice({
       state.isCurrentUserBlocked = false;
       state.isReceiverBlocked = false;
     },
+    changeShowDetail: (state) => {
+      state.showDetail = !state.showDetail;
+    },
   },
 });
 
-export const { changeChat, changeBlock, resetChat } = chatSlice.actions;
+export const { changeChat, changeBlock, resetChat, changeShowDetail } =
+  chatSlice.actions;
 export default chatSlice.reducer;

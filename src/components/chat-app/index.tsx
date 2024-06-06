@@ -12,7 +12,7 @@ import { useChat, useUser } from "@/hooks/use-redux";
 
 const ChatApp = () => {
   const { currentUser, isLoading } = useUser();
-  const { chatId } = useChat();
+  const { chatId, showDetail } = useChat();
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const ChatApp = () => {
         <>
           <List />
           {chatId && <Chat />}
-          {chatId && <Detail />}
+          {showDetail && <Detail />}
         </>
       ) : (
         <Login />

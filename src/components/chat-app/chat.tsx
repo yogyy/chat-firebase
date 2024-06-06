@@ -12,6 +12,8 @@ import { useChat, useUser } from "@/hooks/use-redux";
 import { cn, toDate } from "@/lib/utils";
 import upload from "@/lib/upload";
 import { ChatTypes, MessageType } from "@/types";
+import { useDispatch } from "react-redux";
+import { changeShowDetail } from "@/state/chat/chat-slice";
 
 export const Chat = () => {
   const [chat, setChat] = useState<ChatTypes>();
@@ -24,10 +26,11 @@ export const Chat = () => {
   const endRef = useRef<HTMLDivElement | null>(null);
   const { currentUser } = useUser();
   const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } = useChat();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "instant" });
-  }, []);
+  }, [chatId]);
 
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "chats", chatId!), (res) => {
@@ -103,9 +106,12 @@ export const Chat = () => {
   };
 
   return (
-    <div className="relative flex h-full basis-1/2 flex-col border-r border-[#dddddd35] md:basis-3/4">
+    <div className="relative flex h-full flex-col border-r border-[#dddddd35] md:basis-3/4">
       <div className="flex items-center justify-between border-b border-[#dddddd35] p-5">
-        <div className="flex items-center gap-5">
+        <div
+          className="flex items-center gap-5 "
+          onClick={() => dispatch(changeShowDetail())}
+        >
           <Avatar src={user?.avatar} alt={user?.username.concat("'s avatar")} />
           <div className="flex flex-col gap-[5px]">
             <span className="text-lg font-bold">{user?.username}</span>
@@ -147,7 +153,7 @@ export const Chat = () => {
           </svg>
         </div>
       </div>
-      <div className="scroller flex flex-1 flex-col gap-5 overflow-y-scroll p-5 [&>.own]:self-end">
+      <div className="scroller relative flex flex-1 flex-col gap-5 overflow-y-scroll p-5 [&>.own]:self-end">
         {chat?.messages.map((msg) => (
           <div
             className={cn(
@@ -277,14 +283,14 @@ export const Chat = () => {
           <div className="relative flex max-h-[70%] w-full justify-center py-5">
             <img src={img.url} alt="" className="object-contain" />
           </div>
-          <div className="">
+          <div className="flex justify-center gap-3">
             <input
               type="text"
-              placeholder="Type a message."
+              placeholder="add a description"
               value={text}
               onChange={(e) => setText(e.target.value)}
               disabled={isCurrentUserBlocked || isReceiverBlocked}
-              className="w-3/4 border-none bg-[#d5d8dd80] p-5 outline-none disabled:cursor-not-allowed"
+              className="w-3/4 rounded-lg border-none bg-[#d5d8dd80] p-3 outline-none disabled:cursor-not-allowed"
             />
             <button
               onClick={sendChat}
