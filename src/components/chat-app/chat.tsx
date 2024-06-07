@@ -16,6 +16,8 @@ import { useDispatch } from "react-redux";
 import { changeShowDetail } from "@/state/chat/chat-slice";
 
 export const Chat = () => {
+  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } = useChat();
+  const { currentUser } = useUser();
   const [chat, setChat] = useState<ChatTypes>();
   const [text, setText] = useState("");
   const [img, setImg] = useState<{ file: File | null; url: string }>({
@@ -24,13 +26,12 @@ export const Chat = () => {
   });
 
   const endRef = useRef<HTMLDivElement | null>(null);
-  const { currentUser } = useUser();
-  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } = useChat();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "instant" });
-  }, [chatId]);
+  }, [chatId, chat]);
 
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "chats", chatId!), (res) => {
@@ -82,6 +83,8 @@ export const Chat = () => {
       });
     } catch (error) {
       console.error(error);
+    } finally {
+      endRef.current?.scrollIntoView({ behavior: "instant" });
     }
 
     setText("");
@@ -200,6 +203,7 @@ export const Chat = () => {
             style={{ display: "none" }}
             onChange={handleImage}
             disabled={isCurrentUserBlocked || isReceiverBlocked}
+            accept="image/*"
           />
           <label htmlFor="file">
             <svg
