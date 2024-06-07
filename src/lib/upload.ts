@@ -1,9 +1,14 @@
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "./firebase";
 
-const upload = async (file: File) => {
-  const date = new Date();
-  const storageRef = ref(storage, `images/${date + file.name}`);
+type ImageLocation = "profile" | "chat";
+const upload = async (file: File, location?: ImageLocation) => {
+  const date = new Date().toLocaleString().replace(/\//g, "-"); // replace / to -
+  const fileName = date.replace(/(\d{4}),/, "$1") + " " + file.name; // remove comma after year
+  const storageRef = ref(
+    storage,
+    `images/${location ? location + "/" : ""}${fileName}`,
+  );
 
   const uploadTask = uploadBytesResumable(storageRef, file);
 
