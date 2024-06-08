@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { changeChat } from "@/state/chat/chat-slice";
 import { cn } from "@/lib/utils";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
+import { MagnifyingGlass, Plus } from "../icons";
 
 interface Chats extends MessageType {
   user: UserType | undefined;
@@ -75,6 +76,8 @@ export const ChatList = () => {
     }
   };
 
+  //  TODO:
+  // make filtered for search chat
   // const filteredChat = chats?.filter((c) =>
   //   c.user?.username.toLowerCase().includes(input.toLowerCase()),
   // );
@@ -82,20 +85,8 @@ export const ChatList = () => {
   return (
     <div className="flex-1">
       <div className="items flex gap-5 p-5">
-        <div className="flex flex-1 items-center gap-5 rounded-lg bg-[rgba(17,25,40,0.5)] p-2.5">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="size-5"
-            aria-label="search"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
-              clipRule="evenodd"
-            />
-          </svg>
+        <div className="flex flex-1 items-center gap-5 rounded-lg bg-[#11192880] p-2.5">
+          <MagnifyingGlass aria-label="search" />
           <input
             className="flex-1 border-none bg-transparent outline-none"
             type="text"
@@ -107,35 +98,7 @@ export const ChatList = () => {
           onClick={() => setAddMode((prev) => !prev)}
           type="button"
         >
-          {addMode ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="size-7"
-              aria-label="remove"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4.25 12a.75.75 0 0 1 .75-.75h14a.75.75 0 0 1 0 1.5H5a.75.75 0 0 1-.75-.75Z"
-                clipRule="evenodd"
-              />
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="size-7"
-              aria-label="add"
-            >
-              <path
-                fillRule="evenodd"
-                d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
-                clipRule="evenodd"
-              />
-            </svg>
-          )}
+          <Plus className="size-7" aria-label="Add" />
         </button>
       </div>
       <div className="scroller overflow-y-scroll">
