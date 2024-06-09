@@ -5,7 +5,10 @@ import { auth, db } from "@/lib/firebase";
 import { Button } from "@headlessui/react";
 import { UserCircle } from "@/components/icons";
 import { doc, setDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
@@ -17,11 +20,13 @@ const RegisterPage = () => {
   });
 
   useEffect(() => {
-    if (auth.currentUser !== null) {
-      navigate("/");
-    }
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/");
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth.currentUser]);
+  }, []);
 
   const handleAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(avatar);
@@ -73,7 +78,7 @@ const RegisterPage = () => {
   return (
     <div className="flex h-dvh w-dvw bg-[#0b121580]">
       <div className="flex w-full flex-col items-center justify-center gap-5 backdrop-blur-[19px] lg:w-1/2">
-        <h2 onClick={() => console.log(avatar)}>Create an Account</h2>
+        <h2>Create an Account</h2>
         <form
           onSubmit={handleRegister}
           className="flex w-full max-w-[90%] flex-col items-center justify-center gap-5 lg:max-w-[50%] [&>input]:w-full [&>input]:rounded-lg [&>input]:bg-[#11192890] [&>input]:p-3"

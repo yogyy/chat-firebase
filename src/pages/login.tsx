@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { auth } from "@/lib/firebase";
 import { Button } from "@headlessui/react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
@@ -9,11 +9,13 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (auth.currentUser !== null) {
-      navigate("/");
-    }
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/");
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth.currentUser]);
+  }, []);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
