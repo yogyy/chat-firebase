@@ -4,6 +4,9 @@ import { useChat, useUser } from "@/hooks/use-redux";
 import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { changeBlock } from "@/state/chat/chat-slice";
+import { ChevronDown, ChevronUp } from "../icons";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 export const Detail = () => {
   const { user, isReceiverBlocked, isCurrentUserBlocked } = useChat();
@@ -22,11 +25,17 @@ export const Detail = () => {
       dispatch(changeBlock());
     } catch (err) {
       console.error(err);
+    } finally {
+      if (isReceiverBlocked) {
+        toast.success(user.username.concat(" has been unblocked"));
+      } else {
+        toast.success("You have blocked ".concat(user.username));
+      }
     }
   };
 
   return (
-    <div className="scroller hidden flex-1 basis-1/4 overflow-y-scroll 2xl:block">
+    <div className="scroller hidden flex-1 basis-1/4 overflow-y-scroll border-l border-[#dddddd35] 2xl:block">
       <div className="flex flex-col items-center gap-5 border-b border-[#dddddd35] px-5 py-7">
         <Avatar
           className="h-24 w-24"
@@ -62,14 +71,23 @@ export const Detail = () => {
             <ChevronUp className="size-6" />
           </div>
         </div>
-        <button onClick={handleBlock}>
+        <button
+          onClick={handleBlock}
+          className={cn(
+            "rounded-lg p-2.5 px-3 transition-colors hover:bg-opacity-50",
+            !isReceiverBlocked ? "bg-rose-600" : "bg-emerald-600",
+          )}
+        >
           {isCurrentUserBlocked
             ? "You are Blocked!"
             : isReceiverBlocked
-              ? "User blocked"
+              ? "Unblock User"
               : "Block User"}
         </button>
-        <button className="logout" onClick={() => auth.signOut()}>
+        <button
+          className="rounded-lg bg-[#1a73e8] p-2.5 px-3 transition-colors hover:bg-opacity-50"
+          onClick={() => auth.signOut()}
+        >
           Logout
         </button>
       </div>

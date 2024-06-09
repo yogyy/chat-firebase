@@ -220,7 +220,7 @@ export const Chat = () => {
         </div>
       </div>
       {img.url !== "" && (
-        <div className="absolute z-10 grid h-full w-full rounded-r-xl p-10">
+        <div className="absolute z-10 flex h-full w-full justify-center rounded-r-xl p-10">
           <button
             className="absolute left-2 top-2 p-2"
             onClick={() => setImg({ file: null, url: "" })}
@@ -244,7 +244,7 @@ export const Chat = () => {
               <button
                 onClick={sendChat}
                 disabled={isCurrentUserBlocked || isReceiverBlocked}
-                className="cursor-pointer rounded-md border-none bg-[#5183fe] px-5 py-2.5 disabled:cursor-not-allowed disabled:bg-[#5183feb4]"
+                className="rounded-md border-none bg-[#5183fe] px-5 py-2.5 disabled:cursor-not-allowed disabled:bg-[#5183feb4]"
               >
                 Send
               </button>

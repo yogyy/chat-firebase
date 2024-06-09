@@ -3,7 +3,7 @@ import { UserInfo } from "./user-info";
 
 export const List = () => {
   return (
-    <div className="flex basis-1/4 flex-col border-r border-[#dddddd35]">
+    <div className="flex w-full flex-col flex-wrap border-[#dddddd35] lg:basis-1/4 lg:border-r">
       <UserInfo />
       <ChatList />
     </div>

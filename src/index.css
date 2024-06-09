@@ -30,8 +30,8 @@ body {
 }
 
 .content {
-  width: 80vw;
-  height: 90vh;
+  width: 90dvw;
+  height: 100dvh;
   background-color: #0b121580;
   backdrop-filter: blur(19px) saturate(180%);
   border-radius: 12px;
@@ -109,23 +109,6 @@ input[type="number"]::-webkit-outer-spin-button {
       }
     }
   }
-  button {
-    padding: 15px;
-    background-color: rgba(230, 74, 105, 0.553);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: rgba(220, 20, 60, 0.796);
-    }
-
-    &.logout {
-      padding: 10px;
-      background-color: #1a73e8;
-    }
-  }
 }
 
 /* https://developer.chrome.com/docs/css-ui/scrollbar-styling */
@@ -152,6 +135,13 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 @media not all and (display-mode: standalone) {
+  @media screen and (min-width: 1024px) {
+    .content {
+      width: 100%;
+      min-width: 80dvw;
+      height: 90dvh;
+    }
+  }
   @media screen and (min-width: 1441px) {
     .content {
       max-width: 1600px;

@@ -21,6 +21,7 @@ import {
 } from "firebase/firestore";
 import { useUser } from "@/hooks/use-redux";
 import { Avatar } from "../ui/avatar";
+import { toast } from "sonner";
 
 interface Props {
   isOpen: boolean;
@@ -28,13 +29,17 @@ interface Props {
 }
 
 export const AddUser = ({ close, isOpen }: Props) => {
-  const [user, setUser] = useState<UserType | null>(null);
   const { currentUser } = useUser();
+  const [user, setUser] = useState<UserType | null>(null);
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username");
+
+    if (username === currentUser?.username) {
+      return toast.error("Cannot search your own username");
+    }
 
     try {
       const userRef = collection(db, "users");
@@ -43,7 +48,7 @@ export const AddUser = ({ close, isOpen }: Props) => {
 
       const querySnapshot = await getDocs(q);
       if (querySnapshot.empty) {
-        console.error("user not found");
+        toast.error("user not found");
       } else {
         setUser(querySnapshot.docs[0].data() as UserType);
       }
@@ -94,7 +99,7 @@ export const AddUser = ({ close, isOpen }: Props) => {
         __demoMode
       >
         <div className="fixed inset-0 z-10 flex w-screen items-center justify-center transition-all duration-300">
-          <div className="flex h-[90dvh] w-[40%] items-center justify-center bg-[#0b121580] p-4 backdrop-blur-sm">
+          <div className="flex h-full w-full items-center justify-center bg-[#0b121580] p-4 backdrop-blur-sm md:h-[90dvh] md:w-4/5 md:rounded-xl lg:w-[40%]">
             <TransitionChild
               enter="ease-out duration-300"
               enterFrom="opacity-0 transform-[scale(95%)]"
@@ -110,19 +115,21 @@ export const AddUser = ({ close, isOpen }: Props) => {
                 >
                   Add New User
                 </DialogTitle>
-                <div className="h-max w-max rounded-lg bg-[rgba(17,25,40,0.781)] p-7">
-                  <form className="flex gap-5" onSubmit={handleSearch}>
+                <div className="w-full rounded-lg p-5">
+                  <form className="flex gap-5 p-2.5" onSubmit={handleSearch}>
                     <input
                       type="text"
                       name="username"
-                      className="rounded-lg bg-white/80 p-5 text-black"
+                      placeholder="Search username"
+                      className="w-max flex-1 rounded-xl border-none bg-[#53535380] px-3 outline-none disabled:cursor-not-allowed"
                     />
-                    <button className="rounded-lg bg-[#1a73e8] p-5">
+                    <button className="rounded-lg bg-[#1a73e8] p-2.5 px-3">
                       Search
                     </button>
                   </form>
+
                   {user && (
-                    <div className="mt-12 flex items-center justify-between">
+                    <div className="flex items-center justify-between border-t border-[#dddddd35] py-6">
                       <div className="flex items-center gap-5">
                         <Avatar
                           src={user.avatar}
@@ -130,7 +137,12 @@ export const AddUser = ({ close, isOpen }: Props) => {
                         />
                         <span>{user.username}</span>
                       </div>
-                      <button onClick={handleAdd}>Add User</button>
+                      <button
+                        onClick={handleAdd}
+                        className="rounded-xl bg-[#53535380] p-2.5 px-3 hover:bg-[#535353]"
+                      >
+                        Add User
+                      </button>
                     </div>
                   )}
                 </div>
