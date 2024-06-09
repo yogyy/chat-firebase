@@ -59,7 +59,7 @@ export const Chat = () => {
 
     try {
       if (img.file) {
-        imgUrl = await upload(img.file);
+        imgUrl = await upload(img.file, "images");
       }
       await updateDoc(doc(db, "chats", chatId!), {
         messages: arrayUnion({

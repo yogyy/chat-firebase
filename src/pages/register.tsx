@@ -55,7 +55,7 @@ const RegisterPage = () => {
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
-      const imgUrl = await upload(avatar.file as File, "profile");
+      const imgUrl = await upload(avatar.file as File, "images", "profile");
 
       await setDoc(doc(db, "users", res.user.uid), {
         username,
