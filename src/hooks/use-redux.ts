@@ -10,9 +10,8 @@ export function useUser() {
 }
 
 export function useChat() {
-  const { chatId, isCurrentUserBlocked, isReceiverBlocked, user } = useSelector(
-    (state: RootState) => state.chat,
-  );
+  const { chatId, isCurrentUserBlocked, isReceiverBlocked, user, showDetail } =
+    useSelector((state: RootState) => state.chat);
 
-  return { chatId, isCurrentUserBlocked, isReceiverBlocked, user };
+  return { chatId, showDetail, isCurrentUserBlocked, isReceiverBlocked, user };
 }
