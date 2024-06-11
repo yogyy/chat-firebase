@@ -5,6 +5,7 @@ export interface ChatTypes {
     senderId: string;
     text: string;
     img?: string | null;
+    voice?: string | null;
   }>;
 }
 export interface MessageType {
@@ -12,6 +13,7 @@ export interface MessageType {
   isSeen: boolean;
   lastMessage: string;
   receiverId: string;
+  senderId: string;
   updatedAt: number;
 }
 
