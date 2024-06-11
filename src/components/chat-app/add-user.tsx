@@ -74,6 +74,7 @@ export const AddUser = ({ close, isOpen }: Props) => {
           lastMessage: "",
           receiverId: currentUser?.id,
           updatedAt: Date.now(),
+          senderId: user?.id,
         }),
       });
 
@@ -83,6 +84,7 @@ export const AddUser = ({ close, isOpen }: Props) => {
           lastMessage: "",
           receiverId: user?.id,
           updatedAt: Date.now(),
+          senderId: currentUser?.id,
         }),
       });
     } catch (error) {
