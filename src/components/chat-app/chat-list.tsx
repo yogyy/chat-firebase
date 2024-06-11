@@ -8,7 +8,13 @@ import { useDispatch } from "react-redux";
 import { changeChat } from "@/state/chat/chat-slice";
 import { cn } from "@/lib/utils";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
-import { MagnifyingGlass, Plus } from "../icons";
+import {
+  DoubleCheck,
+  MagnifyingGlass,
+  Microphone,
+  Photo,
+  Plus,
+} from "../icons";
 
 interface Chats extends MessageType {
   user: UserType | undefined;
@@ -26,7 +32,7 @@ export const ChatList = () => {
       doc(db, "userchats", currentUser!.id),
       async (res) => {
         const items = res.data()?.chats as MessageType[];
-
+        items.length > 1 && items?.sort((a, b) => b.updatedAt - a.updatedAt);
         const promises = items?.map(async (item) => {
           const userDocRef = doc(db, "users", item?.receiverId);
           const userDocSnap = await getDoc(userDocRef);
@@ -37,7 +43,6 @@ export const ChatList = () => {
         });
         const chatData = await Promise.all(promises);
         setChats(chatData as Chats[]);
-        // console.log(chatData);
       },
     );
 
@@ -108,7 +113,6 @@ export const ChatList = () => {
             onClick={() => handleSelectChat(chat)}
             className={cn(
               "flex cursor-pointer items-center gap-5 border-b border-[#dddddd35] px-4 py-3",
-              chat.isSeen === true ? "bg-transparent" : "bg-[#5183fe]",
             )}
           >
             <Avatar
@@ -117,7 +121,24 @@ export const ChatList = () => {
             />
             <div className="flex flex-col gap-2.5">
               <span className="font-medium">{chat.user?.username}</span>
-              <p className="text-sm font-light">{chat.lastMessage}</p>
+              <p className={cn("flex items-center gap-1 text-sm font-light")}>
+                {chat.senderId === currentUser?.id && (
+                  <DoubleCheck className="size-4" />
+                )}
+                {chat.lastMessage === "image" ? (
+                  <>
+                    <Photo className="size-4" />
+                    <span>Foto</span>
+                  </>
+                ) : chat.lastMessage === "audio" ? (
+                  <>
+                    <Microphone className="size-4" />
+                    <span>Audio</span>
+                  </>
+                ) : (
+                  chat.lastMessage.length !== 0 && chat.lastMessage
+                )}
+              </p>
             </div>
           </div>
         ))}

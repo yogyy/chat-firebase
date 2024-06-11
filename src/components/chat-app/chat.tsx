@@ -17,12 +17,12 @@ import { changeShowDetail } from "@/state/chat/chat-slice";
 import {
   Camera,
   Information,
-  Microphone,
   Photo,
   Telephone,
   VideoCam,
   XMark,
 } from "../icons";
+import { VoiceNote } from "@/components/voice-note";
 
 export const Chat = () => {
   const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } = useChat();
@@ -53,9 +53,9 @@ export const Chat = () => {
   }, [chatId]);
 
   const sendChat = async () => {
-    if (text === "") return;
-
     let imgUrl = null;
+
+    if (text === "" && img.file === null) return;
 
     try {
       if (img.file) {
@@ -81,7 +81,8 @@ export const Chat = () => {
           const { chats } = userChatsData as { chats: MessageType[] };
           const chatIndex = chats.findIndex((c) => c.chatId === chatId);
 
-          chats[chatIndex].lastMessage = text;
+          chats[chatIndex].lastMessage = text.length !== 0 ? text : "image";
+          chats[chatIndex].senderId = currentUser?.id as string;
           chats[chatIndex].isSeen = id === currentUser?.id ? true : false;
           chats[chatIndex].updatedAt = Date.now();
 
@@ -171,9 +172,15 @@ export const Chat = () => {
                     className="max-w-80 rounded-lg"
                   />
                 )}
+                {msg.voice && (
+                  <audio controls key={msg.voice}>
+                    <source src={msg.voice} type="audio/webm;codecs=opus" />
+                  </audio>
+                )}
                 <p
                   className={cn(
                     "relative flex w-fit gap-3 rounded-lg bg-[#5183fe] px-3 py-3 pr-10",
+                    msg.text.length === 0 ? "bg-transparent" : "",
                   )}
                 >
                   {msg.text}
@@ -200,7 +207,7 @@ export const Chat = () => {
               <Photo aria-label="image" />
             </label>
             <Camera aria-label="camera" />
-            <Microphone aria-label="microphone" />
+            <VoiceNote chatId={chatId!} userId={user!.id} />
           </div>
           <input
             type="text"
