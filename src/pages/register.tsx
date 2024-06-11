@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import upload from "@/lib/upload";
 import { auth, db } from "@/lib/firebase";
-import { Button } from "@headlessui/react";
 import { UserCircle } from "@/components/icons";
 import { doc, setDoc } from "firebase/firestore";
 import {
@@ -112,12 +111,12 @@ const RegisterPage = () => {
             placeholder="Password"
             name="password"
           />
-          <Button
+          <button
             className="w-full rounded-lg bg-[#111928] p-2.5 px-3"
             disabled={loading}
           >
             Sign Up
-          </Button>
+          </button>
         </form>
         <div className="flex gap-2 [&>a]:text-sky-500">
           <p>Already have an account?</p>

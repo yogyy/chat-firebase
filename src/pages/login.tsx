@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { auth } from "@/lib/firebase";
-import { Button } from "@headlessui/react";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -54,12 +53,12 @@ const LoginPage = () => {
               name="password"
               className="w-full rounded-lg bg-[#11192890] p-3"
             />
-            <Button
+            <button
               className="w-full rounded-lg bg-[#111928] p-2.5 px-3"
               disabled={loading}
             >
               Sign In
-            </Button>
+            </button>
           </form>
           <div className="flex gap-2 [&>a]:text-sky-500">
             <p>New to ChatZzz?</p>
